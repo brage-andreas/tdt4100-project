@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import connect4.models.Game;
 import connect4.models.Tile;
+import connect4.models.Game.Column;
 
 public class GameTest {
     private Game game;
@@ -18,18 +19,23 @@ public class GameTest {
     }
 
     @Test
-    public void testGetCurrentPlayer() {
-        assertEquals(Tile.Player, this.game.getCurrentPlayer());
+    public void testFileHandling() {
+        this.game.makeMove(Column.D);
     }
 
     @Test
     public void testIsValidMove() {
-        assertTrue(this.game.isValidMove(0));
-        assertTrue(this.game.isValidMove(1));
-        assertTrue(this.game.isValidMove(2));
-        assertTrue(this.game.isValidMove(3));
-        assertTrue(this.game.isValidMove(4));
-        assertTrue(this.game.isValidMove(5));
-        assertTrue(this.game.isValidMove(6));
+        assertTrue(this.game.isValidMove(Column.A));
+        assertTrue(this.game.isValidMove(Column.B));
+        assertTrue(this.game.isValidMove(Column.C));
+        assertTrue(this.game.isValidMove(Column.D));
+        assertTrue(this.game.isValidMove(Column.E));
+        assertTrue(this.game.isValidMove(Column.F));
+        assertTrue(this.game.isValidMove(Column.G));
+    }
+
+    @Test
+    public void testGetCurrentPlayer() {
+        assertEquals(Tile.Player, this.game.getCurrentPlayer());
     }
 }

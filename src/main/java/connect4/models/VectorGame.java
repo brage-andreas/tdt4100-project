@@ -2,16 +2,20 @@ package connect4.models;
 
 import java.io.File;
 
+import connect4.models.Game.Column;
+
 public interface VectorGame {
-  void makeMove(int column);
-
-  boolean isValidMove(int column);
-
   boolean[] getValidMoves();
 
-  Tile isWon();
+  boolean isValidMove(Column column);
 
-  void loadGame(File file);
+  void makeMove(Column column) throws IllegalStateException;
 
-  File saveGame();
+  boolean isGameOver();
+
+  Tile getWinner() throws IllegalStateException;
+
+  void loadGameFile(File file) throws IllegalArgumentException;
+
+  File saveGameFile();
 }

@@ -3,7 +3,11 @@ package connect4.models;
 import java.util.Arrays;
 
 public class Game implements VectorGame {
-  public static final int COLUMN_COUNT = 7;
+  public enum Column {
+    A, B, C, D, E, F, G;
+  }
+
+  public static final int COLUMN_COUNT = Column.values().length;
   public static final int COLUMN_SIZE = 6;
   public static final int BOARD_SIZE = COLUMN_COUNT * COLUMN_SIZE;
   private Tile[] board = new Tile[COLUMN_COUNT * COLUMN_SIZE];
@@ -17,32 +21,46 @@ public class Game implements VectorGame {
     return this.currentPlayer;
   }
 
-  public boolean isValidMove(int column) {
+  @Override
+  public boolean isValidMove(Column column) {
     BoardHelper boardHelper = new BoardHelper(COLUMN_COUNT, COLUMN_SIZE, this.board);
+    System.out.println(COLUMN_COUNT);
     Tile[] highestRow = boardHelper.getRow(0);
 
-    return highestRow[column] == Tile.Empty;
+    return highestRow[column.ordinal()] == Tile.Empty;
   }
 
-  public void makeMove(int column) throws IllegalArgumentException {
+  @Override
+  public void makeMove(Column column) throws IllegalStateException {
     if (!this.isValidMove(column)) {
-      throw new IllegalArgumentException("Invalid move to column " + column);
+      throw new IllegalStateException("Invalid move to column " + column);
     }
 
     BoardHelper boardHelper = new BoardHelper(COLUMN_COUNT, COLUMN_SIZE, this.board);
-    Tile[] selectedColumn = boardHelper.getColumn(column);
+    Tile[] selectedColumn = boardHelper.getColumn(column.ordinal());
 
     for (int row = COLUMN_SIZE - 1; row >= 0; row--) {
       if (selectedColumn[row] == Tile.Empty) {
-        this.board[boardHelper.translate(row, column)] = this.currentPlayer;
+        this.board[boardHelper.translate(row, column.ordinal())] = this.currentPlayer;
         break;
       }
     }
   }
 
   @Override
-  public Tile isWon() {
-    // TODO Auto-generated method stub
-    return null;
+  public Tile getWinner() throws IllegalStateException {
+    if (!this.isGameOver()) {
+      throw new IllegalStateException("Can't get winner when game isn't over");
+    }
+    // TODO
+    /*
+     * if (...) {
+     * return Tile.Player;
+     * } else if (...) {
+     * return Tile.Opponent;
+     * } else {
+     * return Tile.Empty;
+     * }
+     */
   }
 }
